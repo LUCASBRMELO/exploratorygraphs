@@ -1,0 +1,12 @@
+wd<-getwd()
+url<-"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(url,destfile = paste0(wd,"/data.zip"))
+unzip("data.zip")
+df<-read.table("household_power_consumption.txt",sep=";", header=TRUE)
+df$Date<-strptime(df$Date,format = "%d/%m/%Y")
+df<-subset(df,Date=="2007-02-01"|Date=="2007-02-02")
+df$Time<-strptime(df$Time,format = "%T")
+df$Global_active_power<-as.numeric(paste(df$Global_active_power))
+hist(df$Global_active_power,col="orangered",main="Global Active Power",xlab="Global Active Power(kilowatts)")
+dev.copy(png, file = "PLOT1.png")
+dev.off()
